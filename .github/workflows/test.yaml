@@ -59,7 +59,7 @@ jobs:
           else
             echo "DEPLOY Condition is not 'fail'. Continuing with the step."
           fi
-      if: github.event_name == 'push' && $steps.test-commit-status-check.PR_COMMIT_STATUS == 'failure'
+      if: github.event_name == 'push' && steps.test-commit-status-check.PR_COMMIT_STATUS == 'failure'
 
   deploy:
     needs: test
