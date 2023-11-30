@@ -81,7 +81,7 @@ jobs:
             echo "PR Condition is not 'success'. Failing the step."
             exit 1
           fi
-      if: github.event_name == 'push' && steps.test-commit-status-check.STATUS == 'failure'
+      if: github.event_name == 'push' && steps.test-commit-status-check.outputs.STATUS == 'failure'
 
   deploy:
     needs: test
