@@ -44,7 +44,7 @@ jobs:
       if: github.event_name == 'pull_request'
 
 
-    - name: Check PR branch commit status
+    - name: Check PR branch status
       id: test-commit-status-check
       run: |
           # Extract the pull request number from the GitHub event payload
@@ -88,9 +88,9 @@ jobs:
     needs: test
     name: Dummy deploy
     runs-on: ubuntu-latest
+    if: github.event_name == 'push'
 
     steps:
     - name: Run deploy
       id: run-deploy
       run: echo "running deploy"
-      if: github.event_name == 'push'
