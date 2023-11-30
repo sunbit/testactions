@@ -47,19 +47,19 @@ jobs:
       id: test-commit-status-check
       run: |
           # Extract the pull request number from the GitHub event payload
-          echo "GITHUB_EVENT_PATH $GITHUB_EVENT_PATH"
-          PR_NUMBER=$(jq --raw-output .number $GITHUB_EVENT_PATH)
-          cat $GITHUB_EVENT_PATH
+
+          PULLS=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/commits/${{ github.sha }}/pulls")
+          PR_NUMBER=$(echo "$PULLS" | jq -r '.[-1].number')
           echo "PR_NUMBER $PR_NUMBER"
           # Fetch the commits in the pull request
-          COMMITS=$(curl -s "https://api.github.com/repos/${{ github.repository }}/pulls/${PR_NUMBER}/commits" -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}")
+          COMMITS=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/pulls/${PR_NUMBER}/commits")
           echo "LAST COMMITS $COMMITS"
           # Extract the SHA of the last commit in the pull request
           LAST_COMMIT=$(echo "$COMMITS" | jq -r '.[-1].sha')
           echo "LAST COMMIT $LAST_COMMIT"
-          PR_BRANCH_COMMIT_STATUS=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-            "https://api.github.com/repos/${{ github.repository }}/commits/$LAST_COMMIT/status" | jq -r '.state')
+          PR_BRANCH_COMMIT_STATUS=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/commits/$LAST_COMMIT/status" | jq -r '.state')
           echo "PR_COMMIT_STATUS=$PR_BRANCH_COMMIT_STATUS" >> "$GITHUB_OUTPUT"
+          echo "COMMIT STATUS $PR_BRANCH_COMMIT_STATUS"
       if: github.event_name == 'push'
 
     - name: Run test on deploy
