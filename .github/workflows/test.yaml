@@ -27,10 +27,20 @@ jobs:
 
     steps:
 
+    - name: Checkout code
+      uses: actions/checkout@v2
+
     - name: Run test on PR
       id: run-test-pr
       run: |
           echo  $(ls ${GITHUB_WORKSPACE})
+          CONDITION=$(cat ${GITHUB_WORKSPACE}/condition)
+          if [ "$CONDITION" == "fail" ]; then
+            echo "PR Condition is 'fail'. Failing the step."
+            exit 1
+          else
+            echo "PR Condition is not 'fail'. Continuing with the step."
+          fi
       if: github.event_name == 'pull_request'
 
     - name: Check PR branch commit status
