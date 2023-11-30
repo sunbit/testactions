@@ -61,10 +61,10 @@ jobs:
 
           # Look for failures in the checks of the commits
           CHECK_RUNS=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/commits/$LAST_COMMIT/check-runs")
-          PR_STATUS=$(echo "$CHECK_RUNS" | jq -r '[ .check_runs[] | select(.conclusion == "failure") | .conclusion] | first // "success"')
+          LAST_PR_COMMIT_CHECKS_STATUS=$(echo "$CHECK_RUNS" | jq -r '[ .check_runs[] | select(.conclusion == "failure") | .conclusion] | first // "success"')
 
-          echo "PR_COMMIT_STATUS=$PR_BRANCH_COMMIT_STATUS" >> "$GITHUB_OUTPUT"
-          echo "COMMIT STATUS $PR_BRANCH_COMMIT_STATUS"
+          echo "STATUS=$LAST_PR_COMMIT_CHECKS_STATUS" >> "$GITHUB_OUTPUT"
+          echo "LAST_PR_COMMIT_CHECKS_STATUS $LAST_PR_COMMIT_CHECKS_STATUS"
 
       if: github.event_name == 'push'
 
@@ -79,7 +79,7 @@ jobs:
             echo "PR Condition is not 'success'. Failing the step."
             exit 1
           fi
-      if: github.event_name == 'push' && steps.test-commit-status-check.PR_COMMIT_STATUS == 'failure'
+      if: github.event_name == 'push' && steps.test-commit-status-check.STATUS == 'failure'
 
   deploy:
     needs: test
