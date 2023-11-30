@@ -30,7 +30,7 @@ jobs:
     - name: Run test on PR
       id: run-test-pr
       run: |
-          CONDITION=$(cat condition)
+          CONDITION=$(cat ${GITHUB_WORKSPACE}/condition)
           if [ "$CONDITION" == "fail" ]; then
             echo "PR Condition is 'fail'. Failing the step."
             exit 1
@@ -52,7 +52,7 @@ jobs:
     - name: Run test on deploy
       id: run-test-deploy
       run: |
-          CONDITION=$(cat condition)
+          CONDITION=$(cat ${GITHUB_WORKSPACE}/condition)
           if [ "$CONDITION" == "fail" ]; then
             echo "DEPLOY Condition is 'fail'. Failing the step."
             exit 1
