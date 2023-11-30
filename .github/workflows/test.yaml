@@ -44,7 +44,7 @@ jobs:
       if: github.event_name == 'pull_request'
 
 
-    - name: Check PR branch commit status
+    - name: Check PR branch status
       id: test-commit-status-check
       run: |
           # Extract the pull request number from the GitHub event payload
