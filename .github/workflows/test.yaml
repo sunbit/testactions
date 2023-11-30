@@ -30,6 +30,7 @@ jobs:
     - name: Run test on PR
       id: run-test-pr
       run: |
+          echo  $(ls ${GITHUB_WORKSPACE})
           CONDITION=$(cat ${GITHUB_WORKSPACE}/condition)
           if [ "$CONDITION" == "fail" ]; then
             echo "PR Condition is 'fail'. Failing the step."
