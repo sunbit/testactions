@@ -88,9 +88,9 @@ jobs:
     needs: test
     name: Dummy deploy
     runs-on: ubuntu-latest
+    if: github.event_name == 'push'
 
     steps:
     - name: Run deploy
       id: run-deploy
       run: echo "running deploy"
-      if: github.event_name == 'push'
