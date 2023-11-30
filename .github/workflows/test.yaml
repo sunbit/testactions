@@ -23,7 +23,7 @@ concurrency:
 jobs:
   test:
     name: Dummy test
-    runs-on: tellusxdp/curl-jq:latest
+    runs-on: ubuntu-latest
 
     steps:
 
@@ -64,7 +64,7 @@ jobs:
   deploy:
     needs: test
     name: Dummy deploy
-    runs-on: tellusxdp/curl-jq:latest
+    runs-on: ubuntu-latest
 
     steps:
     - name: Run deploy
