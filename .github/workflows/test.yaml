@@ -52,6 +52,7 @@ jobs:
     - name: Run test on deploy
       id: run-test-deploy
       run: |
+          ls ${GITHUB_WORKSPACE}
           CONDITION=$(cat ${GITHUB_WORKSPACE}/condition)
           if [ "$CONDITION" == "fail" ]; then
             echo "DEPLOY Condition is 'fail'. Failing the step."
