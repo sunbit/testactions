@@ -49,6 +49,7 @@ jobs:
           # Extract the pull request number from the GitHub event payload
           echo "GITHUB_EVENT_PATH $GITHUB_EVENT_PATH"
           PR_NUMBER=$(jq --raw-output .number $GITHUB_EVENT_PATH)
+          cat $GITHUB_EVENT_PATH
           echo "PR_NUMBER $PR_NUMBER"
           # Fetch the commits in the pull request
           COMMITS=$(curl -s "https://api.github.com/repos/${{ github.repository }}/pulls/${PR_NUMBER}/commits" -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}")
